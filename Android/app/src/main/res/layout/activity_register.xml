@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ar_llRegister"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".LoginActivity">
+
+    <ImageView
+        android:src="@drawable/profile"
+        android:id="@+id/ar_ivProfile"
+        android:layout_width="100dp"
+        android:layout_height="100dp"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="200dp"
+        android:layout_height="60dp">
+        <EditText
+            android:id="@+id/ar_etRegisterName"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="이름"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="200dp"
+        android:layout_height="60dp">
+        <EditText
+            android:id="@+id/ar_etRegisterID"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="아이디"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="200dp"
+        android:layout_height="60dp">
+
+        <EditText
+            android:id="@+id/ar_etRegisterPW"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="비밀번호"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="200dp"
+        android:layout_height="60dp">
+        <EditText
+            android:id="@+id/ar_etRegisterTel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="전화번호"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="200dp"
+        android:layout_height="60dp">
+        <EditText
+            android:id="@+id/ar_etRegisterAccount"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="계좌번호"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/ar_btRegister"
+        android:layout_marginTop="5dp"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:background="#70AD47"
+        android:text="가입완료"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"/>
+
+</LinearLayout>

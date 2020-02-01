@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/al_llLogin"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".LoginActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Tap! The Taxi"
+        android:textColor="#000000"
+        android:textSize="25dp"
+        android:textStyle="italic|bold"
+        android:gravity="center"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="TAP!C"
+        android:textColor="#70AD47"
+        android:textSize="50dp"
+        android:textStyle="italic|bold"
+        android:gravity="center"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="200dp"
+        android:layout_height="60dp">
+        <EditText
+            android:id="@+id/al_etLoginID"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="아이디"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="200dp"
+        android:layout_height="60dp">
+        <EditText
+            android:id="@+id/al_etLoginPW"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textPassword"
+            android:hint="비밀번호"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/al_btLogin"
+        android:layout_marginTop="25dp"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:background="#70AD47"
+        android:text="로그인"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/al_btRegister"
+        android:layout_marginTop="5dp"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:background="#70AD47"
+        android:text="회원가입"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"/>
+
+</LinearLayout>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/as_llSplash"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".SplashActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Tap! The Taxi"
+        android:textColor="#000000"
+        android:textSize="25dp"
+        android:textStyle="italic|bold"
+        android:gravity="center"/>
+
+    <TextView
+        android:layout_marginBottom="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="TAP!C"
+        android:textColor="#70AD47"
+        android:textSize="50dp"
+        android:textStyle="italic|bold"
+        android:gravity="center"/>
+
+</LinearLayout>

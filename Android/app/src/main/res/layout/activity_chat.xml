@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:gravity="center_horizontal"
+tools:context=".ChatActivity">
+
+    <TextView
+        android:id="@+id/ac_tvTitle"
+        android:background="#000000"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Chat"
+        android:textColor="#FFFFFF"
+        android:textSize="25dp"
+        android:textStyle="italic|bold"
+        android:gravity="center"/>
+
+    <ImageView
+        android:src="@drawable/dollor"
+        android:id="@+id/ac_imMoney"
+        android:layout_toRightOf="@id/ac_tvTitle"
+        android:layout_alignStart="@id/ac_tvTitle"
+        android:layout_marginLeft="365dp"
+        android:layout_marginTop="5dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp" />
+
+    <ListView
+        android:id="@+id/lv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ac_etChat"
+        android:layout_below="@+id/ac_tvTitle"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true">
+    </ListView>
+
+    <EditText
+        android:id="@+id/ac_etChat"
+        android:layout_toLeftOf="@+id/ac_btChat"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/ac_btChat"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="전송"
+        android:textStyle="bold"/>
+
+</RelativeLayout>

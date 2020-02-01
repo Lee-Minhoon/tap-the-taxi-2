@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bar_tap"
+        android:icon="@drawable/t"
+        android:enabled="true"
+        android:title="Tap"/>
+
+    <item
+        android:id="@+id/bar_account"
+        android:icon="@drawable/a"
+        android:enabled="true"
+        android:title="Account"/>
+
+    <item
+        android:id="@+id/bar_profile"
+        android:icon="@drawable/p"
+        android:enabled="true"
+        android:title="Profile"/>
+
+</menu>
