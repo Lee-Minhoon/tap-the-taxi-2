@@ -80,12 +80,20 @@ io.sockets.on("connection", function(socket){
     });
     socket.on("money", function(money){
         console.log('송금요청: ', money);
-        result = con2.query('SELECT * FROM room_has_user where roomNo=?', [roomNum]);
-        for(var i = 0; i < result.length; i++){
-            var money = con2.query('SELECT * FROM account where userNo=?', [result[i].userNo]);
-            var balacnce = money[0].accountBalance - 5000;
-            con2.query('UPDATE account SET accountBalance=? where userNo=?', [balacnce, result[i].userNo]);
-        }
+        var v = {
+            'request_money': money / 4
+        };
+        socket.broadcast.to(roomNum).emit("request_money", v);
+    })
+    socket.on("moneyOK", function(money, session){
+        result = con2.query('SELECT * FROM user where userID=?', [session]);
+        userNo = result[0].userNo;
+        console.log(userNo);
+        result = con2.query('SELECT * FROM account where userNo=?', [userNo]);
+        var balance = result[0].accountBalance - money;
+        console.log(balance);
+        con2.query('UPDATE account SET accountBalance=? where userNo=?', [balance, result[0].userNo]);
+        console.log('송금OK');
     })
 });
 

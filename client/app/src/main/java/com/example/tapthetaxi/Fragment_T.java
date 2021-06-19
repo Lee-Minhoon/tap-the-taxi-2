@@ -59,14 +59,17 @@ public class Fragment_T extends Fragment
         Retrofit retrofit = RetrofitClient.getInstance();
         myAPI = retrofit.create(INodeJS.class);
 
+        // 객체 받아오는거
         btn_tap = (ImageView) view.findViewById(R.id.at_tap);
         itt_login = new Intent(getActivity(), LoginActivity.class);
         itt_chat = new Intent(getActivity(), ChatActivity.class);
 
+        // 세션 체크
         getSession = sessionCheck();
         if(getSession.length() == 0){
             startActivity(itt_login);
         }
+        // 지금 접속중인 방 (세션으로 유지중)
         getRoom = sessionRoom();
         if(getRoom == true){
             startActivity(itt_chat);
@@ -75,18 +78,27 @@ public class Fragment_T extends Fragment
         btn_tap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 세션 체크
                 getSession = sessionCheck();
                 if(getSession.length() == 0){
                     startActivity(itt_login);
                 }
+                // GPStracker 객체 받아옴
                 GPStracker g = new GPStracker(getActivity().getApplicationContext());
+                // 위치정보 받아와서
                 Location l = g.getLocation();
+                // 위치정보 확인되면
                 if(l != null){
+                    // 위도 경도 받아옴
                     double lat = l.getLatitude();
                     double lon = l.getLongitude();
+                    // 위도 경도 띄워줌 화면에
                     Toast.makeText(getActivity().getApplicationContext(),"위도 : " + lat + "\n 경도 : " + lon, Toast.LENGTH_LONG).show();
+                    // 룸 함수 실행
                     room(getSession, lat, lon);
+                    // 챗 화면으로 넘어감
                     startActivity(itt_chat);
+                    // 방 세션 저장
                     saveSession(true);
                 }
             }

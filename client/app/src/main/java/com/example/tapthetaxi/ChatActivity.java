@@ -1,6 +1,7 @@
 package com.example.tapthetaxi;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tapthetaxi.Retrofit.INodeJS;
@@ -105,6 +107,20 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        socket.on("request_money", new Emitter.Listener() {
+            @Override
+            public void call(final Object... args) {
+                JSONObject jsonObject = (JSONObject)args[0];
+                String request_money = null;
+                try {
+                    request_money = jsonObject.getString("request_money");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                acceptMoney(Integer.parseInt(request_money));
+            }
+        });
+
         editText = (EditText) findViewById(R.id.ac_etChat);
         button = (Button) findViewById(R.id.ac_btChat);
         money = (ImageView) findViewById(R.id.ac_imMoney);
@@ -122,9 +138,72 @@ public class ChatActivity extends AppCompatActivity {
         money.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                socket.emit("money", 5000);
+                requestMoney();
             }
         });
+    }
+
+    public void acceptMoney(final Integer m){
+        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("송금 확인");
+        alert.setMessage(m + "원의 송금 요청입니다.");
+
+        alert.setPositiveButton("수락", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                compositeDisposable.add(myAPI.account(getSession)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Consumer<String>() {
+                            @Override
+                            public void accept(String s) throws Exception {
+                                if(s.contains("userNo")){
+                                    JSONObject jsonObject = new JSONObject(s);
+                                    // 계좌 번호와 잔액 불러옴
+                                    String balance = jsonObject.getString("accountBalance");
+                                    if(Integer.parseInt(balance) >= m) {
+                                        socket.emit("moneyOK", m, getSession);
+                                    }
+                                    else {
+                                        Toast.makeText(ChatActivity.this, "잔액 부족", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                                else{
+                                    Toast.makeText(ChatActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        })
+                );
+            }
+        });
+
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(!ChatActivity.this.isFinishing()) {
+                    alert.show();
+                }
+            }
+        });
+    }
+
+    public void requestMoney(){
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("송금 요청");
+        alert.setMessage("택시 요금을 입력하세요");
+
+        final EditText money = new EditText(this);
+        alert.setView(money);
+
+        alert.setPositiveButton("요청", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Integer total = Integer.parseInt(money.getText().toString());
+                socket.emit("money", total);
+            }
+        });
+
+        alert.show();
     }
 
     public class listItem{
@@ -186,8 +265,6 @@ public class ChatActivity extends AppCompatActivity {
         TextView name;
         TextView chat;
     }
-
-
 
     @Override
     protected void onDestroy() {

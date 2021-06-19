@@ -21,7 +21,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="TAP!C"
+        android:text="TAPXI"
         android:textColor="#70AD47"
         android:textSize="50dp"
         android:textStyle="italic|bold"

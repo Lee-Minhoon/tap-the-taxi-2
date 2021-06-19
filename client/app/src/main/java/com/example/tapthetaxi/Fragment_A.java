@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,6 +61,7 @@ public class Fragment_A extends Fragment
         txv_balance = (TextView)view.findViewById(R.id.aa_tvBalance);
         itt_login = new Intent(getActivity(), LoginActivity.class);
 
+        // 세션체크(로그인 중인지, 로그인 중이 아니면 login 화면으로 팅굼)
         String getSession = sessionCheck();
         if(getSession.length() == 0){
             startActivity(itt_login);
@@ -75,13 +75,16 @@ public class Fragment_A extends Fragment
                     public void accept(String s) throws Exception {
                         if(s.contains("userNo")){
                             JSONObject jsonObject = new JSONObject(s);
+                            // 계좌 번호와 잔액 불러옴
                             String num = jsonObject.getString("accountNum");
                             String balance = jsonObject.getString("accountBalance");
 
+                            // setText
                             txv_num.setText("계좌번호 : " + num);
                             txv_balance.setText("계좌잔액 : " + balance);
                         }
                         else{
+                            // 조회할 수 없음
                             Toast.makeText(getActivity(), ""+s, Toast.LENGTH_SHORT).show();
                         }
                     }

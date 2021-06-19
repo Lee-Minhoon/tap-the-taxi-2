@@ -1,13 +1,13 @@
 package com.example.tapthetaxi;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tapthetaxi.Retrofit.INodeJS;
 import com.example.tapthetaxi.Retrofit.RetrofitClient;
@@ -47,6 +47,7 @@ public class RegisterActivity extends AppCompatActivity {
         Retrofit retrofit = RetrofitClient.getInstance();
         myAPI = retrofit.create(INodeJS.class);
 
+        // 객체 받아옴
         edt_name = (EditText)findViewById(R.id.ar_etRegisterName);
         edt_id = (EditText)findViewById(R.id.ar_etRegisterID);
         edt_password = (EditText)findViewById(R.id.ar_etRegisterPW);
@@ -58,6 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 회원가입 함수
                 registerUser(edt_name.getText().toString(), edt_id.getText().toString(), edt_password.getText().toString(), edt_tel.getText().toString(), edt_account.getText().toString());
             }
         });
