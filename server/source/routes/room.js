@@ -24,7 +24,7 @@ module.exports = function(express, con){
         //방생성과 참가를 막음
         if(result && result.length){
             console.log("로그3, 참여중인 방 존재여부: true");
-            res.json('방이 이미 존재함');
+            res.json('방이 이미 존재합니다.');
         }
         //조건과 일치하는 방이있다면 참가 아니면 생성
         else{
@@ -49,7 +49,7 @@ module.exports = function(express, con){
                         params = [result[i].roomNo, no];
                         con.query(sql, params);
                         console.log("로그8, "+i+"번째 방에 참가함");
-                        res.json('방에 참가함');
+                        res.json('방에 참가하였습니다.');
                         break;
                     }
                 }
@@ -59,7 +59,7 @@ module.exports = function(express, con){
                     sql = 'INSERT INTO room (userNo, locationX, locationY) VALUES (?, ?, ?)';
                     params = [no, x, y];
                     result = con.query(sql, params);
-                    res.json('방이 생성됨');
+                    res.json('방이 생성되었습니다.');
 
                     insertId = result.insertId;
                     console.log(insertId+'번 방 생성됨');
@@ -73,7 +73,7 @@ module.exports = function(express, con){
                 sql = 'INSERT INTO room (userNo, locationX, locationY) VALUES (?, ?, ?)';
                 params = [no, x, y];
                 result = con.query(sql, params);
-                res.json('방이 생성됨');
+                res.json('방이 생성되었습니다.');
 
                 insertId = result.insertId;
                 console.log(insertId+'번 방 생성됨');

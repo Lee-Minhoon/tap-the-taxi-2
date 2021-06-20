@@ -47,13 +47,13 @@ public class ChatActivity extends AppCompatActivity {
     Button button;
     ImageView money;
     EditText editText;
-    Intent ittLogin;
+    Intent ittLogin, ittAccount;
     String getSession;
 
     private Socket socket;
     {
         try {
-            socket = IO.socket("http://10.0.2.2:3000/");
+            socket = IO.socket("http://192.168.219.101:3000/");
         }catch (URISyntaxException e){
             e.printStackTrace();
         }
@@ -73,6 +73,7 @@ public class ChatActivity extends AppCompatActivity {
         myAPI = retrofit.create(INodeJS.class);
 
         ittLogin = new Intent(ChatActivity.this, LoginActivity.class);
+        ittAccount = new Intent(ChatActivity.this, Fragment_A.class);
 
         getSession = sessionCheck();
         if(getSession.length() == 0){
@@ -121,6 +122,48 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        socket.on("join_user", new Emitter.Listener() {
+            @Override
+            public void call(final Object... args) {
+                JSONObject jsonObject = (JSONObject)args[0];
+                String join_user = null;
+                try {
+                    join_user = jsonObject.getString("join_user");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                userJoin(join_user);
+            }
+        });
+
+        socket.on("send_money", new Emitter.Listener(){
+            @Override
+            public void call(final Object... args) {
+                JSONObject jsonObject = (JSONObject)args[0];
+                String send_user = null;
+                try {
+                    send_user = jsonObject.getString("send_user");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                sendUser(send_user);
+            }
+        });
+
+        socket.on("user_exit", new Emitter.Listener(){
+            @Override
+            public void call(final Object... args) {
+                JSONObject jsonObject = (JSONObject)args[0];
+                String exit_user = null;
+                try {
+                    exit_user = jsonObject.getString("exitUser");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                exitUser(exit_user);
+            }
+        });
+
         editText = (EditText) findViewById(R.id.ac_etChat);
         button = (Button) findViewById(R.id.ac_btChat);
         money = (ImageView) findViewById(R.id.ac_imMoney);
@@ -139,6 +182,39 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 requestMoney();
+            }
+        });
+    }
+
+    public void userJoin(final String s){
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(!ChatActivity.this.isFinishing()) {
+                    Toast.makeText(ChatActivity.this, s + "님이 방에 입장하였습니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    public void sendUser(final String s){
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(!ChatActivity.this.isFinishing()) {
+                    Toast.makeText(ChatActivity.this, s + "님이 송금하였습니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    public void exitUser(final String s) {
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(!ChatActivity.this.isFinishing()) {
+                    Toast.makeText(ChatActivity.this, s + "님이 퇴장하였습니다.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -199,7 +275,7 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Integer total = Integer.parseInt(money.getText().toString());
-                socket.emit("money", total);
+                socket.emit("money", total, getSession);
             }
         });
 
@@ -269,6 +345,7 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        socket.emit("exit_user", getSession);
         socket.disconnect();
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();

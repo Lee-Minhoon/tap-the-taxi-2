@@ -62,6 +62,10 @@ io.sockets.on("connection", function(socket){
                 console.log('소켓통신시작/ 방에 입장: '+roomNum);
                 //io.to(roomNum).emit('message_from_server', '?');
                 roomExist = null;
+                var join = {
+                    'join_user' : result[0].userID
+                };
+                socket.broadcast.to(roomNum).emit("join_user", join);
                 break;
             }else{
                 roomExist = con2.query('SELECT * FROM room_has_user where userNo=?', [session]);
@@ -78,22 +82,43 @@ io.sockets.on("connection", function(socket){
         };
         io.sockets.to(roomNum).emit("message_from_server", chat);
     });
-    socket.on("money", function(money){
+    socket.on("money", function(money, session){
+        result = con2.query('SELECT * FROM user where userID=?', [session]);
+        session = result[0].userNo;
+        result = con2.query('SELECT * FROM room where userNo=?', [session]);
+        roomNum = result[0].roomNo;
+        result = con2.query('SELECT * FROM room_has_user where roomNo=?', [roomNum]);
         console.log('송금요청: ', money);
         var v = {
-            'request_money': money / 4
+            'request_money': money / result.length
         };
         socket.broadcast.to(roomNum).emit("request_money", v);
     })
     socket.on("moneyOK", function(money, session){
+        userID = session;
         result = con2.query('SELECT * FROM user where userID=?', [session]);
         userNo = result[0].userNo;
         console.log(userNo);
         result = con2.query('SELECT * FROM account where userNo=?', [userNo]);
-        var balance = result[0].accountBalance - money;
-        console.log(balance);
-        con2.query('UPDATE account SET accountBalance=? where userNo=?', [balance, result[0].userNo]);
-        console.log('송금OK');
+        if(result && result.length) {
+            var balance = result[0].accountBalance - money;
+            console.log(balance);
+            con2.query('UPDATE account SET accountBalance=? where userNo=?', [balance, result[0].userNo]);
+            console.log('송금OK');
+            var u = {
+                'send_user' : userID
+            };
+            socket.broadcast.to(roomNum).emit("send_money", u);
+        }
+        else {
+            console.log('송금실패');
+        }
+    })
+    socket.on("exit_user", function(session){
+        var u = {
+            'exitUser' : session
+        };
+        socket.broadcast.to(roomNum).emit("user_exit", u);
     })
 });
 
