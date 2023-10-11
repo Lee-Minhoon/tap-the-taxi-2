@@ -53,7 +53,7 @@ public class ChatActivity extends AppCompatActivity {
     private Socket socket;
     {
         try {
-            socket = IO.socket("http://192.168.219.101:3000/");
+            socket = IO.socket("http://10.0.2.2:3000/");
         }catch (URISyntaxException e){
             e.printStackTrace();
         }

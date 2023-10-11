@@ -50,6 +50,7 @@ let session;
 let result;
 let roomNum;
 let roomExist;
+let senderAccount;
 
 io.sockets.on("connection", function(socket){
     socket.on("joinRoom", function(session){
@@ -92,6 +93,7 @@ io.sockets.on("connection", function(socket){
         var v = {
             'request_money': money / result.length
         };
+        senderAccount = con2.query('SELECT * FROM account where userNo=?', [session]);
         socket.broadcast.to(roomNum).emit("request_money", v);
     })
     socket.on("moneyOK", function(money, session){
@@ -102,8 +104,10 @@ io.sockets.on("connection", function(socket){
         result = con2.query('SELECT * FROM account where userNo=?', [userNo]);
         if(result && result.length) {
             var balance = result[0].accountBalance - money;
+            var senderBalance = senderAccount[0].accountBalance + money;
             console.log(balance);
             con2.query('UPDATE account SET accountBalance=? where userNo=?', [balance, result[0].userNo]);
+            con2.query('UPDATE account SET accountBalance=? where userNo=?', [senderBalance, senderAccount[0].userNo]);
             console.log('송금OK');
             var u = {
                 'send_user' : userID
@@ -114,7 +118,7 @@ io.sockets.on("connection", function(socket){
             console.log('송금실패');
         }
     })
-    socket.on("exit_user", function(session){
+    socket.on("exit_user", function(session){1
         var u = {
             'exitUser' : session
         };
